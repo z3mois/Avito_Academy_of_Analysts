@@ -1,11 +1,11 @@
 import re
-# from sklearn.feature_extraction.text import CountVectorizer
-import nltk
+
+
 class CountVectorizer:
     def __init__(self) -> None:
-        global corpus
-        self.corpus = corpus
-    def get_feature_names(self)->list[str]:
+        pass
+
+    def get_feature_names(self) -> list[str]:
         str_corpus = ".".join(self.corpus)
         list_word = re.findall(r"[a-zA-z]+", str_corpus)
         dictAnswer = {}
@@ -23,8 +23,12 @@ class CountVectorizer:
             if not dictHelp[key]:
                 answer_list.append(key)
                 dictHelp[key] = True
-        return answer_list if answer_list else ["The sentence does not contain unique words"]
-    def fit_transform(self, corpus)->list[list[int]]:
+        if answer_list:
+            return answer_list
+        else:
+            return ["The sentence does not contain unique words"]
+
+    def fit_transform(self, corpus) -> list[list[int]]:
         self.corpus = corpus
         answer = []
         uniquWord = self.get_feature_names()
@@ -36,19 +40,13 @@ class CountVectorizer:
                 answer[count].append(temp_list.count(elem))
             count += 1
         return answer
-'''
- не понятно откуда брать корпус если первым вызовем get_feature_names метод, поэтому берем его из глобальной переменной
- и потом при вызове fit_transform метода перезатируем corpus
-'''
-corpus = [
-    'Crock Pot Pasta Never boil pasta again',
-    'Pasta Pomodoro Fresh ingredients Parmesan to taste',
-    'Pasta promodo fresh ingredients parmesan to adsad'
-]
-vectorizer = CountVectorizer()
-# -
-print(vectorizer.get_feature_names())
-print(vectorizer.fit_transform(corpus))
-# vectorizer = CountVectorizer()
-# X = vectorizer.fit_transform(corpus)
-# print(X.toarray())
+
+
+if __name__ == '__main__':
+    corpus = [
+        'Crock Pot Pasta Never boil pasta again',
+        'Pasta Pomodoro Fresh ingredients Parmesan to taste'
+    ]
+    vectorizer = CountVectorizer()
+    print(vectorizer.fit_transform(corpus))
+    print(vectorizer.get_feature_names())
